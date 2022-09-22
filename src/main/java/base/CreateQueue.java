@@ -3,32 +3,22 @@ package base;
 import java.util.Arrays;
 
 public class CreateQueue {
-    private int top;
-    private int[] buf;
+    int top, bottom;
+    int[] buf;
 
-    private CreateQueue() {
+    public CreateQueue() {
         this.top = 0;
+        this.bottom = 0;
         this.buf = new int[10];
     }
 
     public void push(int num) {
         grow();
-        buf[this.top++] = num;
+        this.buf[top++] = num;
     }
 
     public int pop() {
-        int bufData = peek();
-        removeCapacity();
-        return bufData;
-    }
-
-    private void removeCapacity() {
-        int len = size();
-        System.arraycopy(buf, top + 1, buf, top, len);
-    }
-
-    public int peek() {
-        return buf[this.top];
+        return peek();
     }
 
     public int size() {
@@ -36,8 +26,22 @@ public class CreateQueue {
     }
 
     private void grow() {
-        if (top == size()) {
-            buf = Arrays.copyOf(buf, top + 1);
+        if (this.top == size()) {
+            this.buf = Arrays.copyOf(this.buf, this.top + 1);
         }
+    }
+
+    private int peek() {
+        if (bottom == top) {
+            throw new ArrayIndexOutOfBoundsException("더 출력할 값 없음");
+        }
+        if (bottom == size() && (bottom % size() < top)) {
+            bottom = 0;
+        }
+        return buf[bottom++];
+    }
+
+    public static void main(String[] args) {
+
     }
 }
